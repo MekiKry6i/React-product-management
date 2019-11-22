@@ -1,0 +1,83 @@
+.ProductDetails {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+    height: 200px;
+    width: 50%;
+    padding: 10px;
+    margin: 10px 15px;
+    border: 1px solid silver;
+    border-radius: 5px;
+}
+.select-product {
+    text-align: center;
+    margin: 20px 150px;
+}
+.ProductDetails.form-control {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    height: 300px;
+    box-shadow: 10px 10px 5px #aaaaaa;
+    max-width: 700px;
+    margin: 10px auto;
+}
+.title.form-control {
+    justify-content: center;
+}
+.ProductDetails.edit-mode .form-control {
+    display: flex;
+}
+
+.form-control.product-info {
+    display: flex;
+    height: 45px;
+}
+.delete-btn {
+    margin: 5px 0 5px;
+}
+.MuiSvgIcon-root.delete-icon {
+    height: 30px;
+    width: 30px;
+}
+.MuiSvgIcon-root.delete-icon:focus {
+    outline: none;
+}
+input {
+    /*width: 200px;*/
+    /*max-width: 200px;*/
+    border: 2px;
+    padding: 2px 5px;
+    /*height: 30px;*/
+    background-color: rgba(0,0,0,.07);
+    box-shadow: 0 0 0 2px transparent inset;
+    flex: 1;
+}
+input:focus {
+    box-shadow: 0 0 0 2px #00aeef inset;
+    border: 0;
+}
+label {
+    text-align: left;
+    margin-right: 10px;
+    font-weight: 600;
+    width: 110px;
+}
+.info {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.MuiButtonBase-root.save-edit-btn {
+ margin: 10px 0;
+}
+.MuiFormControl-root {
+    max-width: 150px;
+}
+.MuiSelect-root.MuiSelect-select {
+    min-width: 150px;
+}
+#Quantity {
+    min-width: 150px;
+    max-width: 150px;
+}

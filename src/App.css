@@ -1,0 +1,87 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  color: #fff;
+  background-color: #1976d2;
+  height: 70px;
+  padding: 20px;
+  color: white;
+}
+.content {
+  display: flex;
+  flex-flow: row;
+  width: 60%;
+  margin: 10px auto;
+}
+
+.products-container {
+  display: flex;
+  flex-flow: column;
+  animation-duration: 2s;
+  animation: Show-products;
+  width: 300px;
+  border-right: 1px solid silver;
+}
+
+.MuiButton-root.products-list, .MuiButton-root.create-product {
+  padding: 5px;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: #1976d2;
+  /*background-color: #61dafb;*/
+}
+
+.product-details {
+  display: flex;
+  flex: 1 auto;
+  margin: 10px;
+}
+
+.navigation {
+  margin-top: 10px;
+}
+.navigation .MuiFormControl-root {
+  height: 35px;
+  bottom: 31px;
+  margin-right: 20px;
+}
+.MuiFormControl-root.MuiTextField-root {
+  bottom: 29px;
+}
+.MuiInputBase-root.MuiInput-root input:focus {
+  box-shadow: none;
+}
+.filters-wrapper {
+  display: flex;
+  justify-content: center;
+  height: 35px;
+  margin-top: 10px;
+}
+
+.filters-wrapper > li {
+  display: inline-block;
+  margin: 5px;
+  color: black;
+  font-weight: 600;
+  border: 1px solid silver;
+  padding: 5px;
+}
+
+
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes Show-products {
+  from { display: none; }
+  to { display: flex;}
+}

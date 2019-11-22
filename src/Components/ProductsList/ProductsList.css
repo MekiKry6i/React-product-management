@@ -1,0 +1,31 @@
+.Product {
+    width : 250px;
+    margin: 10px;
+    border: 1px solid black;
+    background-color: lightskyblue;
+    text-align: center;
+    border-radius: 5px;
+    display: inline-block;
+    box-shadow: 10px 10px 5px #aaaaaa;
+}
+
+.title {
+    font-weight: 600;
+}
+
+.MuiButtonBase-root.details-btn {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 5px;
+    margin-bottom: 5px;
+}
+.Product .close {
+    position: relative;
+    right: 4px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin: 0px 5px;
+}
+.category {
+    font-weight: 500;
+}
