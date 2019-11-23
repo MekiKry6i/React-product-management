@@ -31,9 +31,10 @@ class App extends Component {
     // }
 
     showProducts = () => {
-        const doesShow = this.state.showProducts;
+        //const doesShow = this.state.showProducts;
+        const {showProducts} = this.state;
         this.setState({
-            showProducts: !doesShow,
+            showProducts: !showProducts,
         });
     }
 
@@ -42,7 +43,7 @@ class App extends Component {
             showProducts: false,
         });
 
-        this.setState({selectedProduct: ProductModel });
+        this.setState({selectedProduct: ProductModel});
     }
 
     openProductDetails = (id) => {
@@ -66,7 +67,7 @@ class App extends Component {
             });
             const fullList = this.fullProductList;
 
-            if (foundProducts.length > 0 ){
+            if (foundProducts.length > 0) {
                 this.setState({
                     products: foundProducts,
                     filtered: true,
@@ -77,18 +78,18 @@ class App extends Component {
             console.log(foundProducts);
         }
     }
-    productSearchByName = (event)=> {
-        console.log( event.target.value);
-        if (this.state.products.length > 0){
+    productSearchByName = (event) => {
+        console.log(event.target.value);
+        if (this.state.products.length > 0) {
             const filterBy = event.target.value;
             const currentProductsList = [...this.state.products];
             let foundProducts = [];
             currentProductsList.map((product) => {
-                if (product.title.toLowerCase().search(filterBy.toLowerCase()) > -1){
+                if (product.title.toLowerCase().search(filterBy.toLowerCase()) > -1) {
                     foundProducts.push(product);
                 }
             });
-            if (foundProducts.length > 0){
+            if (foundProducts.length > 0) {
                 this.setState({
                     products: foundProducts,
                     filtered: true,
@@ -98,21 +99,17 @@ class App extends Component {
     }
 
     deleteProduct = (event) => {
-        debugger
-        // console.log(productIndex);
-        // debugger
+        console.log('delete product');
+
         const currentProducts = [...this.state.products];
         const currentProductId = this.state.selectedProduct.id;
-        const productIndex = currentProducts.findIndex( product => {
+        const productIndex = currentProducts.findIndex(product => {
             return product.id === currentProductId;
         });
         currentProducts.splice(productIndex, 1);
         console.log('before', this.state);
-        const selected = this.state.selectedProduct;
-        const show = this.state.selectedProduct;
-        debugger
 
-        this.setState( state =>{
+        this.setState(state => {
             return {
                 products: currentProducts,
                 selectedProduct: null
@@ -121,25 +118,41 @@ class App extends Component {
         console.log('after', this.state);
     }
 
-    handleProductCreated = (data) => {
-        console.log(data);
-    }
-    editHandler =() => {
+    onEditHandler = (editedProduct) => {
+        const { products } = this.state;
+        const productIndex = this.state.products.findIndex(product => {
+            return product.id === editedProduct.id;
+        });
+        products[productIndex] =  editedProduct;
 
-
-        this.setState({selectedProduct: ProductModel });
+        this.setState({
+            selectedProduct: editedProduct,
+            ...this.state.products, editedProduct
+        });
+        console.log('updated', this.state.products);
     }
 
-    handelProductsChanged = (event) => {
-        debugger
-        this.setState({products: Products});
+    changeHandler = (event) => {
+        const name = event.target.name;
+        this.setState({
+            ...this.state, selectedProduct: {
+                ...this.state.selectedProduct,
+                [name]: event.target.value
+            }
+        });
+        console.log(this.state);
     }
+
     resetFilters = () => {
         this.setState({products: this.fullProductList})
     }
-    filterBy = (type) => {
-        console.log(type);
-        //event.target.value
+
+    onCreateProductHandler = (product) => {
+        const newProduct = product
+        if (!this.state.showProducts) {
+            this.showProducts();
+        }
+        this.setState({selectedProduct: newProduct});
     }
 
     nameChangedHandler = (event) => {
@@ -151,6 +164,7 @@ class App extends Component {
         let products = null;
         let classes = [];
         let categories = Categories;
+        console.log(this.state.products)
         let filters =
             (
                 <div className="filters-wrapper">
@@ -162,10 +176,14 @@ class App extends Component {
                     {/*                   onClick={() => this.filterBy(property)}> {property}:</li>;*/}
                     {/*    })*/}
                     {/*}*/}
-                    <TextField id="standard-search" label="Product search" type="search" className={'classes.textField'} margin="normal"
+                    <TextField id="standard-search" label="Product search" type="search"
+                               className={'classes.textField'}
+                               margin="normal"
                                onChange={this.productSearchByName} disabled={!this.state.showProducts}/>
-                    <Navigation className="test" categoriesType={categories} changed={this.filterProductsHandler} disabled={!this.state.showProducts}/>
-                    <Button variant="contained" color="secondary" className='reset-btn' disabled={!this.state.filtered}
+                    <Navigation className="test" categoriesType={categories} changed={this.filterProductsHandler}
+                                disabled={!this.state.showProducts}/>
+                    <Button variant="contained" color="secondary" className='reset-btn'
+                            disabled={!this.state.filtered}
                             onClick={this.resetFilters}>Reset Filters</Button>
                 </div>
             );
@@ -208,10 +226,11 @@ class App extends Component {
                 <div className="content">
                     {products}
                     <div className="product-details">
-                        { this.state.selectedProduct ? <ProductDetails productData={this.state.selectedProduct}
-                                                                       deleteProduct={this.deleteProduct}
-                                                                       editProduct={this.editHandler}
-                                                                       productCreated={this.handleProductCreated}></ProductDetails> : null }
+                        {this.state.selectedProduct ? <ProductDetails productData={this.state.selectedProduct}
+                                                                      deleteProduct={this.deleteProduct}
+                                                                      productEdited={this.onEditHandler}
+                                                                      productCreated={this.onCreateProductHandler}
+                        ></ProductDetails> : null}
                     </div>
                 </div>
                 {/*<p>{this.name}</p>*/}

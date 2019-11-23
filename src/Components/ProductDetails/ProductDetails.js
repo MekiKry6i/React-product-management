@@ -27,7 +27,7 @@ class ProductDetails extends Component {
 
     state = {
         selectedProduct: this.props.productData,
-        edit: true
+        editMode: false
     };
 
     changeHandler = (event) => {
@@ -43,7 +43,11 @@ class ProductDetails extends Component {
 
     productService = productsList;
 
-
+    componentDidUpdate(prevProps) {
+        if (this.props.productData.id && (prevProps.productData.id !== this.props.productData.id)) {
+           this.setState( {selectedProduct: this.props.productData, editMode: false});
+        }
+    }
 
     // '' is the initial state value;
 
@@ -60,38 +64,31 @@ class ProductDetails extends Component {
     handleDateChange = date => {
         //setSelectedDate(date);
     };
+
     editDetails =() => {
-        //this.setState({selectedProduct: selectedProduct});
+        console.log( this.state.selectedProduct);
+        this.setState({editMode: true});
     }
 
     saveEditHandler = (event) => {
         console.log(this.props, this.props.productData, this.state.selectedProduct);
-        debugger
-        const currentProduct = this.state.selectedProduct;
-
         if (this.state.selectedProduct.id) {
             //TODO: getProductById service
-            let currentProductsList = Products;
-            const foundProduct = currentProductsList.find((product) => {
-                return product.id === this.state.selectedProduct.id;
-            });
-            if (foundProduct) {
-                currentProductsList = [...Products, this.state.selectedProduct];
-            }
+            const updatedProduct = this.state.selectedProduct;
+            this.setState({editMode: false});
+            this.props.productEdited(updatedProduct);
             console.log('updating');
         } else {
             let createdProduct = this.state.selectedProduct;
             createdProduct.id = this.generateId();
             console.log('creating....');
             Products.push(createdProduct);
+            this.props.productCreated(createdProduct);
             this.setState({selectedProduct: {}});
         }
 
+
     };
-    deleteHandler = ()=> {
-
-    }
-
 
     displeyValue = (<input type="text" id="Category" name="category" placeholder={this.props.productData.category}/>);
 
@@ -116,13 +113,24 @@ class ProductDetails extends Component {
                     </div>
         };
 
-        if (!this.props.productData.id) {
+        if (!this.props.productData.id || this.state.editMode) {
+            const editedProduct = this.state.selectedProduct;
             return (
                 <div className="ProductDetails form-control">
+                    {/*<input*/}
+                    {/*    className="search-input"*/}
+                    {/*    type="text"*/}
+                    {/*    placeholder="Search the Web"*/}
+                    {/*    onChange={this.fieldChange}*/}
+                    {/*    onKeyDown={this.handleOnKeyPress}*/}
+                    {/*    autoFocus*/}
+                    {/*    value={searchValue}*/}
+                    {/*    style={inputStyles}*/}
+                    {/*/>*/}
                     <form className='test' noValidate autoComplete="off">
                         <div className="title form-control product-info">
                             <label htmlFor="Title">Title: </label>
-                            <input type="text" id="Title" name="title" placeholder={this.props.productData.title}  onChange={this.changeHandler}/>
+                            <input type="text" id="Title" name="title" value={editedProduct.title} onChange={this.changeHandler}/>
                         </div>
                         <div className="category form-control product-info">
                             <label htmlFor="category">Category:</label>
@@ -130,6 +138,7 @@ class ProductDetails extends Component {
                                 <Select
                                     labelId=""
                                     name="category"
+                                    value={editedProduct.category}
                                     id="demo-simple-select"
                                     onChange={this.changeHandler}>
                                     <MenuItem value={'notebooks'} selected>Notebooks</MenuItem>
@@ -140,13 +149,14 @@ class ProductDetails extends Component {
                         </div>
                         <div className="quantity form-control product-info">
                             <label htmlFor="quantity"> Quantity:</label>
-                            <input name="quantity" type="number" min="1" id="Quantity" value={this.props.productData.quantity} onChange={this.changeHandler}/>
+                            <input name="quantity" type="number" min="1" id="Quantity" value={editedProduct.quantity} onChange={this.changeHandler}/>
                         </div>
                         <div className="creationDate form-control product-info">
                             <label>Creation Date: </label>
                             <input type="date" id="start" name="creationDate"
-                                   defaultValue="2018-07-22"
-                                   min="2018-01-01" max="2020-12-31" onChange={this.changeHandler}/>
+
+                                   value={editedProduct.creationDate}
+                                   min="01-01-2018" max="01-01-2021" onChange={this.changeHandler}/>
                         </div>
                         <div className="description form-control product-info">
                             <label htmlFor="">Description:</label>
@@ -158,7 +168,7 @@ class ProductDetails extends Component {
                             {/*    className={'classes.textField'}*/}
                             {/*    margin="normal"*/}
                             {/*/>*/}
-                            <input type="text" id="Description" name="description" placeholder={this.props.productData.description} onChange={this.changeHandler}/>
+                            <input type="text" id="Description" name="description" value={editedProduct.description} onChange={this.changeHandler}/>
                         </div>
                             {/*<TextField id="date" type="date" defaultValue="2019-11-20" className=""/>*/}
                         <Button variant="contained" color="primary" className={'save-edit-btn'} onClick={this.saveEditHandler}>Save Details</Button>
