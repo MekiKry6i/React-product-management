@@ -98,16 +98,11 @@ class App extends Component {
         }
     }
 
-    deleteProduct = (event) => {
+    deleteProduct = (index) => {
         console.log('delete product');
 
         const currentProducts = [...this.state.products];
-        const currentProductId = this.state.selectedProduct.id;
-        const productIndex = currentProducts.findIndex(product => {
-            return product.id === currentProductId;
-        });
-        currentProducts.splice(productIndex, 1);
-        console.log('before', this.state);
+         currentProducts.splice(index, 1);
 
         this.setState(state => {
             return {
@@ -115,7 +110,6 @@ class App extends Component {
                 selectedProduct: null
             }
         });
-        console.log('after', this.state);
     }
 
     onEditHandler = (editedProduct) => {

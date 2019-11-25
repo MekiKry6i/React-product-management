@@ -44,9 +44,10 @@ class ProductDetails extends Component {
     productService = productsList;
 
     componentDidUpdate(prevProps) {
-        if (this.props.productData.id && (prevProps.productData.id !== this.props.productData.id)) {
-           this.setState( {selectedProduct: this.props.productData, editMode: false});
+        if (prevProps.productData.id !== this.props.productData.id) {
+           this.setState( state => ({selectedProduct: this.props.productData, editMode: false}));
         }
+
     }
 
     // '' is the initial state value;
@@ -154,7 +155,6 @@ class ProductDetails extends Component {
                         <div className="creationDate form-control product-info">
                             <label>Creation Date: </label>
                             <input type="date" id="start" name="creationDate"
-
                                    value={editedProduct.creationDate}
                                    min="01-01-2018" max="01-01-2021" onChange={this.changeHandler}/>
                         </div>
