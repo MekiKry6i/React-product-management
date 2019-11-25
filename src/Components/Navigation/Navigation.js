@@ -21,12 +21,10 @@ let navigation = (props) => {
     const [category, setCategory] = React.useState('');
 
     const inputLabel = React.useRef(null);
-   // const [labelWidth, setLabelWidth] = React.useState(0);
+    // const [labelWidth, setLabelWidth] = React.useState(0);
 
     React.useEffect(() => {
         //setLabelWidth(inputLabel.current);
-        //debugger
-        console.log(111111);
     }, [props.disabled]);
 
     let handleChange = (event) => {

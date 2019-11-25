@@ -12,6 +12,11 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import TextField from '@material-ui/core/TextField';
 
 class App extends Component {
+
+    constructor(props) {
+        super(props);
+        this.dateInput = React.createRef();
+    }
     name = '';
     fullProductList = Products;
 
@@ -98,6 +103,35 @@ class App extends Component {
         }
     }
 
+    compareDates = (event) => {
+        console.log(event.target.value);
+        const date = Date.parse(event.target.value);
+        if (this.state.products.length > 0) {
+            const filterBy = event.target.value;
+            const currentProductsList = [...this.state.products];
+            let foundProducts = [];
+            currentProductsList.map((product) => {
+                const productDate = Date.parse(product.creationDate);
+                    if (productDate > date) {
+                        foundProducts.push(product);
+                    }
+            });
+            if (foundProducts.length > 0) {
+                this.setState({
+                    products: foundProducts,
+                    filtered: true,
+                });
+            } else {
+                this.setState({
+                    products: {},
+                    filtered: true,
+                });
+            }
+        }
+    }
+
+
+
     deleteProduct = (index) => {
         console.log('delete product');
 
@@ -138,7 +172,8 @@ class App extends Component {
     }
 
     resetFilters = () => {
-        this.setState({products: this.fullProductList})
+        this.setState({products: this.fullProductList});
+        this.dateInput.current.value = '';
     }
 
     onCreateProductHandler = (product) => {
@@ -158,7 +193,7 @@ class App extends Component {
         let products = null;
         let classes = [];
         let categories = Categories;
-        console.log(this.state.products)
+        console.log(this.dateInput);
         let filters =
             (
                 <div className="filters-wrapper">
@@ -170,19 +205,35 @@ class App extends Component {
                     {/*                   onClick={() => this.filterBy(property)}> {property}:</li>;*/}
                     {/*    })*/}
                     {/*}*/}
+
                     <TextField id="standard-search" label="Product search" type="search"
                                className={'classes.textField'}
                                margin="normal"
                                onChange={this.productSearchByName} disabled={!this.state.showProducts}/>
                     <Navigation className="test" categoriesType={categories} changed={this.filterProductsHandler}
                                 disabled={!this.state.showProducts}/>
+
+                    {/*<TextField*/}
+                    {/*    id="DateFilter"*/}
+                    {/*    label="Creation date:"*/}
+                    {/*    type="date"*/}
+                    {/*    onChange={this.compareDates}*/}
+                    {/*    className="date-creation"*/}
+                    {/*    InputLabelProps={{*/}
+                    {/*        shrink: true,*/}
+                    {/*    }}*/}
+                    {/*    min="01-01-2018" max="01-01-2021"*/}
+                    {/*    ref={this.dateInput}   disabled={!this.state.showProducts}*/}
+                    {/*/>*/}
+                    <input type="date" id="DateFilter" name="creationDate"
+                           min="01-01-2018" max="01-01-2021" onChange={this.compareDates} ref={this.dateInput}   disabled={!this.state.showProducts}/>
                     <Button variant="contained" color="secondary" className='reset-btn'
                             disabled={!this.state.filtered}
                             onClick={this.resetFilters}>Reset Filters</Button>
                 </div>
             );
 
-        if (this.state.showProducts) {
+        if (this.state.showProducts && this.state.products.length > 0) {
             classes.push('btn-secondary');
             products = (
                 <div className="products-container">

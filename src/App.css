@@ -47,6 +47,15 @@
 .navigation {
   margin-top: 10px;
 }
+.MuiFormControl-root.MuiTextField-root.date-creation {
+  bottom:14px;
+  max-width: 160px;
+}
+#DateFilter {
+  max-width: 160px;
+  margin-right: 10px;
+  bottom: 14px;
+}
 .navigation .MuiFormControl-root {
   height: 35px;
   bottom: 31px;
