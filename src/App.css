@@ -63,6 +63,7 @@
 }
 .MuiFormControl-root.MuiTextField-root {
   bottom: 29px;
+  margin-right: 10px;
 }
 .MuiInputBase-root.MuiInput-root input:focus {
   box-shadow: none;

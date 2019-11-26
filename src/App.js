@@ -16,6 +16,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.dateInput = React.createRef();
+        this.idInput =React.createRef();
     }
     name = '';
     fullProductList = Products;
@@ -25,7 +26,8 @@ class App extends Component {
         showProducts: false,
         selectedProduct: null,
         filtered: false,
-        filteredProducts: null
+        filteredProducts: null,
+        searchById: ''
     };
 
     componentDidMount() {
@@ -84,7 +86,7 @@ class App extends Component {
         }
     }
     productSearchByName = (event) => {
-        console.log(event.target.value);
+
         if (this.state.products.length > 0) {
             const filterBy = event.target.value;
             const currentProductsList = [...this.state.products];
@@ -103,8 +105,34 @@ class App extends Component {
         }
     }
 
+    productSearchById = (event) => {
+        if (this.state.products.length > 0) {
+            const iD = event.target.value;
+            this.setState({searchById: iD})
+            const currentProductsList = [...this.state.products];
+            let foundProducts = [];
+            currentProductsList.map((product) => {
+
+                if (product.id === +iD) {
+                    foundProducts.push(product);
+                }
+            });
+            if (foundProducts.length > 0) {
+                this.setState({
+                    products: foundProducts,
+                    filtered: true,
+                });
+            } else {
+                this.setState({
+                    products: {},
+                    filtered: true,
+                });
+            }
+        }
+    }
+
     compareDates = (event) => {
-        console.log(event.target.value);
+
         const date = Date.parse(event.target.value);
         if (this.state.products.length > 0) {
             const filterBy = event.target.value;
@@ -174,6 +202,9 @@ class App extends Component {
     resetFilters = () => {
         this.setState({products: this.fullProductList});
         this.dateInput.current.value = '';
+        this.idInput.current.value = '';
+        this.setState(state =>({ searchById: ''}));
+        console.log(this.idInput.current.value);
     }
 
     onCreateProductHandler = (product) => {
@@ -193,7 +224,6 @@ class App extends Component {
         let products = null;
         let classes = [];
         let categories = Categories;
-        console.log(this.dateInput);
         let filters =
             (
                 <div className="filters-wrapper">
@@ -205,6 +235,12 @@ class App extends Component {
                     {/*                   onClick={() => this.filterBy(property)}> {property}:</li>;*/}
                     {/*    })*/}
                     {/*}*/}
+                    <TextField id="standard-search" label="Search by Id:" type="number"
+                               className='classes.textField'
+                               margin="normal"
+                               value={this.state.searchById}
+                               ref={this.idInput}
+                               onChange={this.productSearchById} disabled={!this.state.showProducts}/>
 
                     <TextField id="standard-search" label="Product search" type="search"
                                className={'classes.textField'}
